@@ -43,6 +43,12 @@ android {
 
 dependencies {
 
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+
+    implementation("com.google.android.gms:play-services-location:21.3.0")
+    implementation("androidx.wear.compose:compose-foundation:1.5.0-rc01")
+    implementation("androidx.wear.compose:compose-material:1.5.0-rc01")
+
     implementation(libs.play.services.wearable)
     implementation(platform(libs.compose.bom))
     implementation(libs.ui)
