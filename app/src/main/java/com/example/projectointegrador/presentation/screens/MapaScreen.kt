@@ -65,7 +65,7 @@ fun MapaScreen(navController: NavController, context: Context) {
                         listOf(Color(0xFF1E1E1E), Color(0xFF2C2C2C))
                     )
                 )
-                .padding(horizontal = 30.dp), // Menos padding para que quepa más
+                .padding(horizontal = 4.dp), // Cambiado de 30.dp a 4.dp para botones más anchos
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
@@ -88,17 +88,24 @@ fun MapaScreen(navController: NavController, context: Context) {
             } else {
                 items(luminariasCercanas.size) { index ->
                     val luminaria = luminariasCercanas[index]
-                    Chip(
+                    Button(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(40.dp),
-                        label = {
+                            .height(60.dp) // Altura aumentada para mejor visibilidad
+                            .padding(horizontal = 1.dp), // Padding mínimo
+                        onClick = {
+                            navController.navigate("detalle/${luminaria.id}")
+                        }
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
                             Text(
                                 "Luminaria #${luminaria.id}",
-                                fontSize = 11.sp
+                                fontSize = 12.sp,
+                                color = Color.White
                             )
-                        },
-                        secondaryLabel = {
                             Text(
                                 "Distancia: ${
                                     distanciaMetros(
@@ -108,13 +115,11 @@ fun MapaScreen(navController: NavController, context: Context) {
                                         luminaria.lon
                                     ).toInt()
                                 } m",
-                                fontSize = 9.sp
+                                fontSize = 10.sp,
+                                color = Color.Gray
                             )
-                        },
-                        onClick = {
-                            navController.navigate("detalle/${luminaria.id}")
                         }
-                    )
+                    }
                 }
             }
         }
@@ -173,9 +178,11 @@ fun DetalleLuminariaScreen(navController: NavController, luminariaId: String) {
             item {
                 Button(
                     onClick = { navController.popBackStack() },
-                    modifier = Modifier.size(80.dp, 30.dp)
+                    modifier = Modifier
+                        .width(80.dp)
+                        .height(30.dp)
                 ) {
-                    Text("Volver", fontSize = 10.sp)
+                    Text("Volver", fontSize = 11.sp)
                 }
             }
         }
