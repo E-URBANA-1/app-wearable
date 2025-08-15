@@ -9,6 +9,7 @@ import com.example.projectointegrador.presentation.screens.MainScreen
 import com.example.projectointegrador.presentation.screens.SecondScreen
 import com.example.projectointegrador.presentation.screens.ThirdScreen
 import com.example.projectointegrador.presentation.screens.MapaScreen
+import com.example.projectointegrador.presentation.screens.HistorialScreen
 import com.example.projectointegrador.presentation.theme.ProjectoIntegradorTheme
 
 @Composable
@@ -24,7 +25,7 @@ fun WearApp() {
                 val id = backStackEntry.arguments?.getString("id") ?: ""
                 DetalleLuminariaScreen(navController, id)
             }
-
+            composable("historial") { HistorialScreen(navController) }
         }
     }
 }
