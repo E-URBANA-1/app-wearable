@@ -71,7 +71,7 @@ fun ButtonGrid(navController: NavController) {
 
             CustomButtonWithIcon(
                 text = "Luminarias",
-                icon = "🏮", // Icono de lámpara
+                icon = "🚦", // Icono de lámpara
                 backgroundColor = Color(0xFF1E88E5)
             ) {
                 navController.navigate("mapa")
