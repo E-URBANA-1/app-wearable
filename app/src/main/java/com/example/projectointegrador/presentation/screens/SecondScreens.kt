@@ -116,7 +116,7 @@ fun ListaLuminarias(
                 Button(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(60.dp)
+                        .height(65.dp) // Aumenté la altura para mejor espaciado
                         .padding(horizontal = 1.dp, vertical = 2.dp),
                     onClick = { onLuminariaClick(luminaria) }
                 ) {
@@ -129,6 +129,7 @@ fun ListaLuminarias(
                             fontSize = 11.sp,
                             color = Color.White
                         )
+                        Spacer(modifier = Modifier.height(2.dp)) // Espaciado añadido
                         Text(
                             text = luminaria.ubicacion,
                             fontSize = 9.sp,
@@ -159,17 +160,23 @@ fun ConsumoEnergeticoScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
-                Text(
-                    text = luminaria.nombre,
-                    fontSize = 11.sp,
-                    color = Color.White
-                )
-                Text(
-                    text = luminaria.ubicacion,
-                    fontSize = 9.sp,
-                    color = Color.Gray
-                )
-                Spacer(modifier = Modifier.height(6.dp))
+                // Encabezado con mejor espaciado
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = luminaria.nombre,
+                        fontSize = 11.sp,
+                        color = Color.White
+                    )
+                    Spacer(modifier = Modifier.height(2.dp)) // Espaciado entre nombre y ubicación
+                    Text(
+                        text = luminaria.ubicacion,
+                        fontSize = 9.sp,
+                        color = Color.Gray
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp)) // Mayor espaciado después del encabezado
             }
 
             item {
@@ -178,7 +185,7 @@ fun ConsumoEnergeticoScreen(
                     fontSize = 10.sp,
                     color = Color.White
                 )
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(6.dp)) // Aumenté el espaciado
             }
 
             item {
@@ -187,23 +194,24 @@ fun ConsumoEnergeticoScreen(
                     labels = days,
                     types = luminaria.tipoFoco
                 )
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(8.dp)) // Aumenté el espaciado después del gráfico
             }
 
             item {
                 Text(
                     text = "Consumo diario (kWh) y tipo de foco usado.",
                     fontSize = 8.sp,
-                    color = Color.LightGray
+                    color = Color.LightGray,
+                    textAlign = TextAlign.Center
                 )
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(8.dp)) // Aumenté el espaciado antes de la tabla
             }
 
             items(days.indices.toList()) { index ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 1.dp),
+                        .padding(vertical = 2.dp), // Aumenté el padding vertical
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
@@ -225,7 +233,7 @@ fun ConsumoEnergeticoScreen(
             }
 
             item {
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(10.dp)) // Mayor espaciado antes del botón
                 Button(
                     onClick = onBackClick,
                     modifier = Modifier
@@ -244,7 +252,7 @@ fun EnergyBarChart(data: List<Int>, labels: List<String>, types: List<String>) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(60.dp)
+            .height(65.dp) // Aumenté la altura del gráfico
             .padding(horizontal = 2.dp),
         verticalAlignment = Alignment.Bottom,
         horizontalArrangement = Arrangement.SpaceEvenly
@@ -259,17 +267,17 @@ fun EnergyBarChart(data: List<Int>, labels: List<String>, types: List<String>) {
                     fontSize = 6.sp,
                     color = Color.Yellow
                 )
-                Spacer(modifier = Modifier.height(1.dp))
+                Spacer(modifier = Modifier.height(2.dp)) // Aumenté el espaciado
                 Box(
                     modifier = Modifier
-                        .width(6.dp)
-                        .height((value * 0.9).dp.coerceAtMost(36.dp))
+                        .width(7.dp) // Aumenté ligeramente el ancho de las barras
+                        .height((value * 0.9).dp.coerceAtMost(38.dp)) // Aumenté la altura máxima
                         .background(
                             if (types[index] == "LED") Color(0xFF007F3E) else Color(0xFFFF9800),
                             shape = RoundedCornerShape(2.dp)
                         )
                 )
-                Spacer(modifier = Modifier.height(1.dp))
+                Spacer(modifier = Modifier.height(2.dp)) // Aumenté el espaciado
                 Text(
                     text = labels[index],
                     fontSize = 6.sp,
