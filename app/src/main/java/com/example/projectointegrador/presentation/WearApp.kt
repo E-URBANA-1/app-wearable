@@ -6,7 +6,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.projectointegrador.presentation.screens.DetalleLuminariaScreen
 import com.example.projectointegrador.presentation.screens.MainScreen
-import com.example.projectointegrador.presentation.screens.SecondScreen
 import com.example.projectointegrador.presentation.screens.ThirdScreen
 import com.example.projectointegrador.presentation.screens.MapaScreen
 import com.example.projectointegrador.presentation.screens.HistorialScreen
@@ -18,7 +17,6 @@ fun WearApp() {
         val navController = rememberNavController()
         NavHost(navController = navController, startDestination = "main") {
             composable("main") { MainScreen(navController) }
-            composable("second") { SecondScreen(navController) }
             composable("third") { ThirdScreen(navController) }
             composable("mapa") { MapaScreen(navController,context = navController.context) }
             composable("detalle/{id}") { backStackEntry ->

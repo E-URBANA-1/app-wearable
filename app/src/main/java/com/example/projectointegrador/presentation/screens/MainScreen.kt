@@ -1,39 +1,41 @@
-// Archivo: presentation/screens/MainScreen.kt
 package com.example.projectointegrador.presentation.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.wear.compose.material.MaterialTheme
-import androidx.wear.compose.material.TimeText
-import androidx.wear.compose.material.Text
+import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
+import androidx.wear.compose.material.*
 
-@Composable
-fun MainScreen(navController: NavController) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colors.background),
-        contentAlignment = Alignment.Center
-    ) {
-        TimeText(modifier = Modifier.align(Alignment.TopCenter))
-        ButtonGrid(navController)
-    }
+// Paleta de colores personalizada
+object AppColors {
+    val Primary = Color(0xFF1FA1AE)        // Turquesa principal
+    val Secondary = Color(0xFF0A67AC)      // Azul
+    val Tertiary = Color(0xFF324B61)       // Azul grisáceo oscuro
+    val Success = Color(0xFF16BE80)        // Verde
+    val Surface = Color(0xFFEAEFF5)        // Gris claro
+    val Background = Color(0xFF1A1A1A)     // Fondo oscuro
+    val BackgroundGradientStart = Color(0xFF324B61)
+    val BackgroundGradientEnd = Color(0xFF1A1A1A)
+    val OnSurface = Color.White
+    val OnSurfaceVariant = Color(0xFFB0B0B0)
+    val Warning = Color(0xFFFF9800)
+    val Error = Color(0xFFFF5722)
 }
 
 @Composable
-fun ButtonGrid(navController: NavController) {
+fun MainScreen(navController: NavController) {
     // Estado para simular fallos de API - reemplazar con llamada real a API
     val hayFallos = remember { mutableStateOf(false) }
 
@@ -47,72 +49,72 @@ fun ButtonGrid(navController: NavController) {
         hayFallos.value = false // Cambiar a true para probar la visualización del botón
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(vertical = 15.dp, horizontal = 6.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+    Scaffold(
+        timeText = { TimeText() }
     ) {
-        Row(
+        ScalingLazyColumn(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(2.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        listOf(AppColors.BackgroundGradientStart, AppColors.BackgroundGradientEnd)
+                    )
+                )
+                .padding(horizontal = 8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            CustomButtonWithIcon(
-                text = "Historial",
-                icon = "📋", // Icono de historial/lista
-                backgroundColor = Color(0xFF00BFA5)
-            ) {
-                // TODO: Navegar a historial de luminarias vistas
-                navController.navigate("historial")
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
             }
 
-            CustomButtonWithIcon(
-                text = "Luminarias",
-                icon = "🚦", // Icono de lámpara
-                backgroundColor = Color(0xFF1E88E5)
-            ) {
-                navController.navigate("mapa")
-            }
-        }
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(2.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            CustomButtonWithIcon(
-                text = "Info App",
-                icon = "ℹ️", // Icono de información
-                backgroundColor = Color(0xFF1565C0)
-            ) {
-                // TODO: Navegar a información de la app
-                // navController.navigate("info")
+            item {
+                CustomButtonWithIcon(
+                    text = "Historial",
+                    icon = "📋",
+                    backgroundColor = AppColors.Primary
+                ) {
+                    navController.navigate("historial")
+                }
             }
 
-            CustomButtonWithIcon(
-                text = "Consumo",
-                icon = "📊", // Icono de gráfica
-                backgroundColor = Color(0xFF0D47A1)
-            ) {
-                navController.navigate("second")
+            item {
+                CustomButtonWithIcon(
+                    text = "Luminarias",
+                    icon = "🚦",
+                    backgroundColor = AppColors.Secondary
+                ) {
+                    navController.navigate("mapa")
+                }
             }
-        }
 
-        // Solo mostrar botón de fallo si hay fallos reales
-        if (hayFallos.value) {
-            Spacer(modifier = Modifier.height(4.dp))
-            CustomButtonWithIcon(
-                text = "Fallo",
-                icon = "⚠️", // Icono de advertencia
-                backgroundColor = Color(0xFFD32F2F),
-                onClick = { navController.navigate("third") }
-            )
+            item {
+                CustomButtonWithIcon(
+                    text = "Info App",
+                    icon = "ℹ️",
+                    backgroundColor = AppColors.Success
+                ) {
+                    // TODO: Navegar a información de la app
+                    // navController.navigate("info")
+                }
+            }
+
+            // Solo mostrar botón de fallo si hay fallos reales
+            if (hayFallos.value) {
+                item {
+                    CustomButtonWithIcon(
+                        text = "Fallo Detectado",
+                        icon = "⚠️",
+                        backgroundColor = AppColors.Error
+                    ) {
+                        navController.navigate("third")
+                    }
+                }
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
+            }
         }
     }
 }
@@ -122,33 +124,34 @@ fun CustomButtonWithIcon(
     text: String,
     icon: String,
     backgroundColor: Color,
+    textColor: Color = AppColors.OnSurface,
     onClick: () -> Unit
 ) {
     Box(
         modifier = Modifier
-            .size(70.dp)
-            .clip(CircleShape)
+            .fillMaxWidth()
+            .height(50.dp)
+            .clip(RoundedCornerShape(25.dp))
             .background(backgroundColor)
             .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = icon,
-                fontSize = 18.sp,
-                color = Color.White
+                fontSize = 16.sp,
+                color = if (backgroundColor == AppColors.Surface) AppColors.Tertiary else AppColors.OnSurface
             )
-            Spacer(modifier = Modifier.height(2.dp))
+            Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = text,
-                fontSize = 9.sp,
-                color = Color.White,
+                fontSize = 11.sp,
+                color = textColor,
                 fontWeight = FontWeight.Medium,
-                textAlign = TextAlign.Center,
-                lineHeight = 10.sp
+                textAlign = TextAlign.Center
             )
         }
     }
