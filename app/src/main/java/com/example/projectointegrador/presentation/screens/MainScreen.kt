@@ -30,7 +30,7 @@ fun MainScreen(navController: NavController) {
         // hayFallos.value = apiResponse.hasFaults
 
         // Simulación temporal (eliminar cuando conectes la API real)
-        hayFallos.value = true // Cambiar a true para probar la visualización del botón
+        hayFallos.value = false // Cambiar a true para probar la visualización del botón
     }
 
     Scaffold(
