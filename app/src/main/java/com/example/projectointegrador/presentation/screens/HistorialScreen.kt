@@ -97,11 +97,7 @@ fun HistorialScreen(navController: NavController) {
         // Detalle del historial
         DetalleHistorial(
             luminaria = luminariaSeleccionada!!,
-            onBackClick = { luminariaSeleccionada = null },
-            onVerActualClick = {
-                // Navegar a la luminaria actual
-                navController.navigate("detalle/${luminariaSeleccionada!!.id}")
-            }
+            onBackClick = { luminariaSeleccionada = null }
         )
     }
 }
@@ -120,7 +116,7 @@ fun ListaHistorial(
                 .fillMaxSize()
                 .background(
                     Brush.verticalGradient(
-                        listOf(Color(0xFF1E1E1E), Color(0xFF2C2C2C))
+                        listOf(Color(0xFF324B61), Color(0xFF1A1A1A))
                     )
                 )
                 .padding(horizontal = 4.dp),
@@ -149,13 +145,13 @@ fun ListaHistorial(
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = "Sin historial",
-                            color = Color.Gray,
+                            color = Color(0xFFEAEFF5),
                             fontSize = 10.sp
                         )
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
                             text = "Visita algunas luminarias para ver el historial aquí",
-                            color = Color.Gray,
+                            color = Color(0xFFEAEFF5),
                             fontSize = 8.sp,
                             textAlign = TextAlign.Center
                         )
@@ -176,9 +172,12 @@ fun ListaHistorial(
                     onClick = onBackClick,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(40.dp)
+                        .height(40.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color(0xFF0A67AC)
+                    )
                 ) {
-                    Text("Volver", fontSize = 10.sp)
+                    Text("Volver", fontSize = 10.sp, color = Color.White)
                 }
             }
         }
@@ -192,10 +191,10 @@ fun HistorialItem(
 ) {
     val dateFormat = SimpleDateFormat("dd/MM HH:mm", Locale.getDefault())
     val estadoColor = when (luminaria.estadoUltimaVisita) {
-        "Activa" -> Color(0xFF4CAF50)
-        "Inactiva" -> Color(0xFFFF5722)
-        "Mantenimiento" -> Color(0xFFFF9800)
-        else -> Color.Gray
+        "Activa" -> Color(0xFF16BE80) // Verde de la paleta
+        "Inactiva" -> Color(0xFF1FA1AE) // Turquesa de la paleta
+        "Mantenimiento" -> Color(0xFFFF9800) // Naranja para mantenimiento
+        else -> Color(0xFFEAEFF5) // Gris claro de la paleta
     }
 
     Button(
@@ -203,7 +202,10 @@ fun HistorialItem(
             .fillMaxWidth()
             .height(75.dp)
             .padding(horizontal = 1.dp, vertical = 2.dp),
-        onClick = onClick
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = Color(0xFF324B61) // Azul grisáceo oscuro
+        )
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -218,7 +220,7 @@ fun HistorialItem(
             Text(
                 text = dateFormat.format(luminaria.fechaVisita),
                 fontSize = 9.sp,
-                color = Color.Gray
+                color = Color(0xFFEAEFF5)
             )
             Spacer(modifier = Modifier.height(2.dp))
             Row(
@@ -232,7 +234,7 @@ fun HistorialItem(
                 Text(
                     text = "${luminaria.vecesVisitada}x",
                     fontSize = 8.sp,
-                    color = Color.Yellow
+                    color = Color(0xFF1FA1AE) // Turquesa para contador
                 )
             }
         }
@@ -242,15 +244,14 @@ fun HistorialItem(
 @Composable
 fun DetalleHistorial(
     luminaria: HistorialLuminaria,
-    onBackClick: () -> Unit,
-    onVerActualClick: () -> Unit
+    onBackClick: () -> Unit
 ) {
     val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
     val estadoColor = when (luminaria.estadoUltimaVisita) {
-        "Activa" -> Color(0xFF4CAF50)
-        "Inactiva" -> Color(0xFFFF5722)
-        "Mantenimiento" -> Color(0xFFFF9800)
-        else -> Color.Gray
+        "Activa" -> Color(0xFF16BE80) // Verde de la paleta
+        "Inactiva" -> Color(0xFF1FA1AE) // Turquesa de la paleta
+        "Mantenimiento" -> Color(0xFFFF9800) // Naranja para mantenimiento
+        else -> Color(0xFFEAEFF5) // Gris claro de la paleta
     }
 
     Scaffold(
@@ -259,7 +260,11 @@ fun DetalleHistorial(
         ScalingLazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFF1E1E1E))
+                .background(
+                    Brush.verticalGradient(
+                        listOf(Color(0xFF324B61), Color(0xFF1A1A1A))
+                    )
+                )
                 .padding(horizontal = 4.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -276,7 +281,7 @@ fun DetalleHistorial(
                 Text(
                     text = luminaria.nombre,
                     fontSize = 12.sp,
-                    color = Color.White
+                    color = Color(0xFF1FA1AE) // Turquesa para nombre principal
                 )
                 Spacer(modifier = Modifier.height(2.dp))
             }
@@ -285,7 +290,7 @@ fun DetalleHistorial(
                 Text(
                     text = luminaria.ubicacion,
                     fontSize = 10.sp,
-                    color = Color.Gray
+                    color = Color(0xFFEAEFF5) // Gris claro para ubicación
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             }
@@ -296,7 +301,7 @@ fun DetalleHistorial(
                     Text(
                         text = "Última visita:",
                         fontSize = 9.sp,
-                        color = Color.Gray
+                        color = Color(0xFFEAEFF5)
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
@@ -314,7 +319,7 @@ fun DetalleHistorial(
                     Text(
                         text = "Estado:",
                         fontSize = 9.sp,
-                        color = Color.Gray
+                        color = Color(0xFFEAEFF5)
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
@@ -332,13 +337,13 @@ fun DetalleHistorial(
                     Text(
                         text = "Consumo:",
                         fontSize = 9.sp,
-                        color = Color.Gray
+                        color = Color(0xFFEAEFF5)
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = luminaria.consumoUltimaVisita,
                         fontSize = 10.sp,
-                        color = Color.Yellow
+                        color = Color(0xFF16BE80) // Verde para consumo
                     )
                 }
                 Spacer(modifier = Modifier.height(6.dp))
@@ -350,7 +355,7 @@ fun DetalleHistorial(
                     Text(
                         text = "Veces visitada:",
                         fontSize = 9.sp,
-                        color = Color.Gray
+                        color = Color(0xFFEAEFF5)
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
@@ -364,27 +369,15 @@ fun DetalleHistorial(
 
             item {
                 Button(
-                    onClick = onVerActualClick,
+                    onClick = onBackClick,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(40.dp),
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(0xFF1E88E5)
+                        backgroundColor = Color(0xFF0A67AC) // Azul de la paleta
                     )
                 ) {
-                    Text("Ver Estado Actual", fontSize = 9.sp)
-                }
-                Spacer(modifier = Modifier.height(4.dp))
-            }
-
-            item {
-                Button(
-                    onClick = onBackClick,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(40.dp)
-                ) {
-                    Text("Volver", fontSize = 10.sp)
+                    Text("Volver", fontSize = 10.sp, color = Color.White)
                 }
             }
         }

@@ -21,15 +21,32 @@ fun ThirdScreen(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "⚠️ Alerta de Fallo", fontSize = 14.sp)
-        Text(text = "Luminaria #EUB-025", fontSize = 12.sp)
-        Text(text = "Calle Principal 16 de Septiembre", fontSize = 10.sp)
-        Text(text = "Error: Circuito dañado", fontSize = 10.sp)
+        Text(
+            text = "⚠️ Alerta de Fallo",
+            fontSize = 14.sp,
+            color = Color(0xFF1FA1AE) // Turquesa de tu paleta para destacar la alerta
+        )
+        Text(
+            text = "Luminaria #EUB-025",
+            fontSize = 12.sp,
+            color = Color(0xFF324B61) // Azul oscuro para información principal
+        )
+        Text(
+            text = "Calle Principal 16 de Septiembre",
+            fontSize = 10.sp,
+            color = Color(0xFFEAEFF5) // Gris claro para información secundaria
+        )
+        Text(
+            text = "Error: Circuito dañado",
+            fontSize = 10.sp,
+            color = Color(0xFF16BE80) // Verde para destacar el tipo de error
+        )
 
         Spacer(modifier = Modifier.height(24.dp))
         CustomButton(
             text = "Entendido",
-            backgroundColor = Color(0xFF1E88E5),
+            backgroundColor = Color(0xFF0A67AC), // Azul medio de tu paleta
+            modifier = Modifier.fillMaxWidth(), // Botón alargado
             onClick = { navController.popBackStack() }
         )
     }

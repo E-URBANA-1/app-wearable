@@ -14,7 +14,7 @@ import androidx.wear.compose.material.ButtonDefaults
 import androidx.wear.compose.material.Text
 
 @Composable
-fun CustomButton(text: String, backgroundColor: Color, onClick: () -> Unit) {
+fun CustomButton(text: String, backgroundColor: Color, onClick: () -> Unit, modifier: Modifier) {
     Button(
         onClick = onClick,
         modifier = Modifier.size(56.dp),

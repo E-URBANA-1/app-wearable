@@ -18,22 +18,6 @@ import androidx.navigation.NavController
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import androidx.wear.compose.material.*
 
-// Paleta de colores personalizada
-object AppColors {
-    val Primary = Color(0xFF1FA1AE)        // Turquesa principal
-    val Secondary = Color(0xFF0A67AC)      // Azul
-    val Tertiary = Color(0xFF324B61)       // Azul grisáceo oscuro
-    val Success = Color(0xFF16BE80)        // Verde
-    val Surface = Color(0xFFEAEFF5)        // Gris claro
-    val Background = Color(0xFF1A1A1A)     // Fondo oscuro
-    val BackgroundGradientStart = Color(0xFF324B61)
-    val BackgroundGradientEnd = Color(0xFF1A1A1A)
-    val OnSurface = Color.White
-    val OnSurfaceVariant = Color(0xFFB0B0B0)
-    val Warning = Color(0xFFFF9800)
-    val Error = Color(0xFFFF5722)
-}
-
 @Composable
 fun MainScreen(navController: NavController) {
     // Estado para simular fallos de API - reemplazar con llamada real a API
@@ -46,7 +30,7 @@ fun MainScreen(navController: NavController) {
         // hayFallos.value = apiResponse.hasFaults
 
         // Simulación temporal (eliminar cuando conectes la API real)
-        hayFallos.value = false // Cambiar a true para probar la visualización del botón
+        hayFallos.value = true // Cambiar a true para probar la visualización del botón
     }
 
     Scaffold(
@@ -57,7 +41,7 @@ fun MainScreen(navController: NavController) {
                 .fillMaxSize()
                 .background(
                     Brush.verticalGradient(
-                        listOf(AppColors.BackgroundGradientStart, AppColors.BackgroundGradientEnd)
+                        listOf(Color(0xFF324B61), Color(0xFF1A1A1A))
                     )
                 )
                 .padding(horizontal = 8.dp),
@@ -71,8 +55,8 @@ fun MainScreen(navController: NavController) {
             item {
                 CustomButtonWithIcon(
                     text = "Historial",
-                    icon = "📋",
-                    backgroundColor = AppColors.Primary
+                    icon = "⏱",
+                    backgroundColor = Color(0xFF1FA1AE)
                 ) {
                     navController.navigate("historial")
                 }
@@ -81,8 +65,8 @@ fun MainScreen(navController: NavController) {
             item {
                 CustomButtonWithIcon(
                     text = "Luminarias",
-                    icon = "🚦",
-                    backgroundColor = AppColors.Secondary
+                    icon = "💡",
+                    backgroundColor = Color(0xFF0A67AC)
                 ) {
                     navController.navigate("mapa")
                 }
@@ -91,8 +75,8 @@ fun MainScreen(navController: NavController) {
             item {
                 CustomButtonWithIcon(
                     text = "Info App",
-                    icon = "ℹ️",
-                    backgroundColor = AppColors.Success
+                    icon = "ℹ",
+                    backgroundColor = Color(0xFF16BE80)
                 ) {
                     // TODO: Navegar a información de la app
                     // navController.navigate("info")
@@ -104,8 +88,8 @@ fun MainScreen(navController: NavController) {
                 item {
                     CustomButtonWithIcon(
                         text = "Fallo Detectado",
-                        icon = "⚠️",
-                        backgroundColor = AppColors.Error
+                        icon = "⚠",
+                        backgroundColor = Color(0xFFFF5722)
                     ) {
                         navController.navigate("third")
                     }
@@ -124,7 +108,7 @@ fun CustomButtonWithIcon(
     text: String,
     icon: String,
     backgroundColor: Color,
-    textColor: Color = AppColors.OnSurface,
+    textColor: Color = Color.White,
     onClick: () -> Unit
 ) {
     Box(
@@ -143,7 +127,7 @@ fun CustomButtonWithIcon(
             Text(
                 text = icon,
                 fontSize = 16.sp,
-                color = if (backgroundColor == AppColors.Surface) AppColors.Tertiary else AppColors.OnSurface
+                color = if (backgroundColor == Color(0xFFEAEFF5)) Color(0xFF324B61) else Color.White
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
