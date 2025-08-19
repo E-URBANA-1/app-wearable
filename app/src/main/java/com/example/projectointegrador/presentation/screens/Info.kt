@@ -41,7 +41,7 @@ fun AboutAppScreen(navController: NavController) {
                 color = Color.White
             )
 
-            InfoItem(label = "Desarrollador", value = "Aldo Tolentino")
+            InfoItem(label = "Desarrollador", value = "LAKID")
             InfoItem(label = "Versión", value = "1.0.0")
             InfoItem(label = "Año", value = "2025")
             InfoItem(label = "Derechos", value = "© Aldo Tolentino")

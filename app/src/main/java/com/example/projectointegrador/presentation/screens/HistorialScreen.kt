@@ -25,7 +25,6 @@ import java.util.*
 import java.net.HttpURLConnection
 import java.net.URL
 
-// Modelo de datos
 data class HistorialLuminaria(
     val id: String,
     val nombre: String,
@@ -44,7 +43,6 @@ fun HistorialScreen(navController: NavController) {
     var luminariaSeleccionada by remember { mutableStateOf<HistorialLuminaria?>(null) }
     val scope = rememberCoroutineScope()
 
-    // Cargar datos desde la API
     LaunchedEffect(Unit) {
         scope.launch {
             try {
@@ -97,7 +95,6 @@ fun HistorialScreen(navController: NavController) {
         }
     }
 
-    // Mostrar lista o detalle
     if (luminariaSeleccionada == null) {
         ListaHistorial(
             historial = historial,
