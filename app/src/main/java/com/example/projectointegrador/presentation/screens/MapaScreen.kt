@@ -209,7 +209,6 @@ fun MapaScreen(navController: NavController, context: Context) {
                 )
             }
 
-            // Simulación de ubicación del usuario
             val fakeLocation = Location("mockProvider").apply {
                 latitude = 19.4330
                 longitude = -99.1350
@@ -225,7 +224,6 @@ fun MapaScreen(navController: NavController, context: Context) {
             println("❌ Error en la llamada: ${e.message}")
             e.printStackTrace()
 
-            // Datos de prueba solo en caso de error completo
             luminarias = listOf(
                 Luminaria(
                     id = "test1",
@@ -364,7 +362,6 @@ fun MapaScreen(navController: NavController, context: Context) {
     }
 }
 
-// 📍 Distancia entre coordenadas
 fun distanciaMetros(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
     val r = 6371000
     val dLat = Math.toRadians(lat2 - lat1)
@@ -377,7 +374,6 @@ fun distanciaMetros(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Dou
     return r * c
 }
 
-// 🔎 Detalle de luminaria ACTUALIZADO con datos reales
 @Composable
 fun DetalleLuminariaScreen(navController: NavController, luminariaId: String) {
     var luminaria by remember { mutableStateOf<Luminaria?>(null) }
