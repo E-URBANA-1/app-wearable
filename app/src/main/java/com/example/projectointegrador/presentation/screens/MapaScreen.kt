@@ -3,10 +3,25 @@ package com.example.projectointegrador.presentation.screens
 import android.content.Context
 import android.location.Location
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -17,8 +32,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import androidx.wear.compose.foundation.lazy.items
-import androidx.wear.compose.material.*
-import com.example.projectointegrador.presentation.components.EnergyBarChart
+import androidx.wear.compose.material.Button
+import androidx.wear.compose.material.ButtonDefaults
+import androidx.wear.compose.material.MaterialTheme
+import androidx.wear.compose.material.Scaffold
+import androidx.wear.compose.material.Text
+import androidx.wear.compose.material.TimeText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -28,7 +47,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Header
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Locale
+import java.util.TimeZone
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -164,7 +185,7 @@ fun MapaScreen(navController: NavController, context: Context) {
     var isLoading by remember { mutableStateOf(true) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
-    val token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YTJhYzRiN2U1ZWVlZGM5ODVkMDkxYiIsImNvcnJlbyI6Imx1aXNpdm1hcmF6MDNAZ21haWwuY29tIiwicm9sIjoiQWRtaW4iLCJpYXQiOjE3NTU1NzczMDUsImV4cCI6MTc1NTY2MzcwNX0.JZHG0HqpDfLf8QFNC3fpS1g5cstMAq6LUk_aBT_Ex7o"
+    val token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YTQxMjg2M2ZjOWRhOGI4MDgzYzdiMyIsImNvcnJlbyI6Imx1aXNpdm1hcmF6MDNAZ21haWwuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3NTU1ODk0MTIsImV4cCI6MTc1NTY3NTgxMn0.5iIgaAVsA5_t1F4-OAypX7ir0BBG3nvgubpMMrzrTcw"
 
     LaunchedEffect(Unit) {
         try {
@@ -255,7 +276,7 @@ fun MapaScreen(navController: NavController, context: Context) {
         ) {
             item {
                 Text(
-                    text = "Luminarias con Datos Reales",
+                    text = "Luminarias existentes",
                     color = AppColors.OnSurface,
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.caption1.copy(fontSize = 12.sp)
@@ -380,7 +401,7 @@ fun DetalleLuminariaScreen(navController: NavController, luminariaId: String) {
     var isLoading by remember { mutableStateOf(true) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
-    val token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YTJhYzRiN2U1ZWVlZGM5ODVkMDkxYiIsImNvcnJlbyI6Imx1aXNpdm1hcmF6MDNAZ21haWwuY29tIiwicm9sIjoiQWRtaW4iLCJpYXQiOjE3NTU1NzczMDUsImV4cCI6MTc1NTY2MzcwNX0.JZHG0HqpDfLf8QFNC3fpS1g5cstMAq6LUk_aBT_Ex7o"
+    val token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YTQxMjg2M2ZjOWRhOGI4MDgzYzdiMyIsImNvcnJlbyI6Imx1aXNpdm1hcmF6MDNAZ21haWwuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3NTU1ODk0MTIsImV4cCI6MTc1NTY3NTgxMn0.5iIgaAVsA5_t1F4-OAypX7ir0BBG3nvgubpMMrzrTcw"
 
     LaunchedEffect(luminariaId) {
         try {
@@ -423,7 +444,7 @@ fun DetalleLuminariaScreen(navController: NavController, luminariaId: String) {
                     nombre = found.identificador,
                     ubicacion = "${found.ciudad}, ${found.region}, ${found.pais}"
                 )
-                println("✅ Luminaria encontrada con datos reales")
+                println("✅ Luminarias existentes")
             } else {
                 errorMessage = "Luminaria no encontrada en la base de datos"
             }
@@ -451,7 +472,7 @@ fun DetalleLuminariaScreen(navController: NavController, luminariaId: String) {
                         color = AppColors.Primary
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text("Cargando datos reales...", color = AppColors.OnSurface, fontSize = 10.sp)
+                    Text("Cargando datos...", color = AppColors.OnSurface, fontSize = 10.sp)
                 }
             }
 
@@ -462,7 +483,7 @@ fun DetalleLuminariaScreen(navController: NavController, luminariaId: String) {
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(errorMessage!!, color = AppColors.Error, fontSize = 10.sp, textAlign = TextAlign.Center)
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(4.dp))
                     Button(
                         onClick = { navController.popBackStack() },
                         colors = ButtonDefaults.buttonColors(backgroundColor = AppColors.Tertiary)
@@ -509,10 +530,8 @@ fun DetalleLuminariaScreen(navController: NavController, luminariaId: String) {
                     }
 
                     item {
-                        Text("Estado: ${luminaria!!.estado}", color = estadoColor, fontSize = 10.sp)
-                        Spacer(modifier = Modifier.height(8.dp))
                         Text("Consumo Promedio: ${luminaria!!.consumoTotal}", color = AppColors.Accent, fontSize = 10.sp)
-                        Spacer(modifier = Modifier.height(10.dp))
+                        Spacer(modifier = Modifier.height(20.dp))
                     }
 
                     item {
@@ -523,7 +542,7 @@ fun DetalleLuminariaScreen(navController: NavController, luminariaId: String) {
                                 fontSize = 11.sp,
                                 textAlign = TextAlign.Center
                             )
-                            Spacer(modifier = Modifier.height(10.dp)) // ⬆️ más espacio
+                            Spacer(modifier = Modifier.height(10.dp))
                             Text(
                                 "Coordenadas:\n${String.format("%.4f", luminaria!!.lat)}, ${String.format("%.4f", luminaria!!.lon)}",
                                 color = AppColors.OnSurfaceVariant,
@@ -541,7 +560,7 @@ fun DetalleLuminariaScreen(navController: NavController, luminariaId: String) {
                             if (!hayDatos) {
                                 Text("(Sin datos disponibles)", fontSize = 8.sp, color = AppColors.Warning)
                             } else {
-                                Text("(Datos reales de la API)", fontSize = 8.sp, color = AppColors.Success)
+                                Text("(Datos disponibles)", fontSize = 8.sp, color = AppColors.Success)
                             }
                         }
                         Spacer(modifier = Modifier.height(8.dp))
@@ -579,7 +598,7 @@ fun EnergyBarChart(data: List<Double>, labels: List<String>, types: List<String>
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(110.dp)
+            .height(90.dp)
             .padding(horizontal = 4.dp),
         verticalAlignment = Alignment.Bottom,
         horizontalArrangement = Arrangement.SpaceEvenly
@@ -593,13 +612,13 @@ fun EnergyBarChart(data: List<Double>, labels: List<String>, types: List<String>
 
                 Text(
                     if (hasData) String.format("%.1f", value) else "0",
-                    fontSize = 8.sp, // ⬆️ Un poco más grande para mejor lectura
+                    fontSize = 8.sp,
                     color = if (hasData && value > 0) AppColors.Accent else AppColors.OnSurfaceVariant,
                     maxLines = 1
                 )
                 Spacer(modifier = Modifier.height(6.dp))
 
-                // Barra del gráfico
+
                 val barHeight = if (hasData && maxValue > 0) {
                     ((value / maxValue) * 40).coerceAtLeast(if (value > 0) 4.0 else 0.0)
                 } else {
@@ -608,7 +627,7 @@ fun EnergyBarChart(data: List<Double>, labels: List<String>, types: List<String>
 
                 Box(
                     modifier = Modifier
-                        .width(10.dp) // ⬆️ Más ancho para mejor proporción
+                        .width(10.dp)
                         .height(barHeight.dp)
                         .background(
                             if (hasData && value > 0) {
@@ -620,12 +639,11 @@ fun EnergyBarChart(data: List<Double>, labels: List<String>, types: List<String>
                         )
                 )
 
-                Spacer(modifier = Modifier.height(6.dp)) // ⬆️ Más separación debajo de la barra
+                Spacer(modifier = Modifier.height(6.dp))
 
-                // Etiqueta del día abajo
                 Text(
                     labels.getOrNull(index) ?: "",
-                    fontSize = 9.sp, // ⬆️ Más grande para distinguirse
+                    fontSize = 9.sp,
                     color = AppColors.OnSurface,
                     maxLines = 1
                 )
