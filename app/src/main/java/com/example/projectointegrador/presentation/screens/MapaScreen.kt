@@ -102,7 +102,6 @@ interface ApiService {
     ): List<ConsumoAPI>
 }
 
-// 🔧 Retrofit Client
 object RetrofitClient {
     private val logging = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
@@ -121,9 +120,8 @@ object RetrofitClient {
         .create(ApiService::class.java)
 }
 
-// 📊 Función auxiliar para procesar datos de consumo por día de la semana
 fun procesarConsumoSemanal(consumoData: List<ConsumoAPI>): List<Double> {
-    val diasSemana = Array(7) { mutableListOf<Double>() } // Lunes=0, Domingo=6
+    val diasSemana = Array(7) { mutableListOf<Double>() }
     val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
     dateFormat.timeZone = TimeZone.getTimeZone("UTC")
 
