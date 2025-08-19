@@ -55,7 +55,7 @@ data class Luminaria(
     val consumoTotal: String,
     val estado: String,
     val datosGenerales: String,
-    val consumoDiario: List<Double>, // Datos reales de consumo por día
+    val consumoDiario: List<Double>,
     val tipoFoco: List<String>,
     val nombre: String,
     val ubicacion: String,
@@ -63,7 +63,6 @@ data class Luminaria(
     val encendida: Boolean = true
 )
 
-// 🟡 Modelos API
 data class Coordenadas(
     val lat: Double,
     val lon: Double
