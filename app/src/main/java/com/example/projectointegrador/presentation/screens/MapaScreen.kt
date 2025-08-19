@@ -156,7 +156,6 @@ fun procesarConsumoSemanal(consumoData: List<ConsumoAPI>): List<Double> {
     }
 }
 
-// 🗺️ Pantalla principal ACTUALIZADA
 @Composable
 fun MapaScreen(navController: NavController, context: Context) {
     var userLocation by remember { mutableStateOf<Location?>(null) }
@@ -174,7 +173,6 @@ fun MapaScreen(navController: NavController, context: Context) {
 
             println("🔵 Iniciando llamada a la API...")
 
-            // Llamadas paralelas para obtener luminarias y consumo
             val (luminariasResponse, consumoResponse) = withContext(Dispatchers.IO) {
                 val luminariasCall = RetrofitClient.api.getLuminarias(token)
                 val consumoCall = RetrofitClient.api.getConsumo(token)
@@ -183,7 +181,6 @@ fun MapaScreen(navController: NavController, context: Context) {
 
             println("🟢 Respuesta recibida: ${luminariasResponse.size} luminarias, ${consumoResponse.size} registros de consumo")
 
-            // Guardar datos de consumo
             consumoData = consumoResponse
 
             // Procesar luminarias con datos reales de consumo
