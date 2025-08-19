@@ -183,9 +183,8 @@ fun MapaScreen(navController: NavController, context: Context) {
 
             consumoData = consumoResponse
 
-            // Procesar luminarias con datos reales de consumo
             luminarias = luminariasResponse.map { apiLuminaria ->
-                // Filtrar consumo para esta luminaria específica
+
                 val consumoLuminaria = consumoResponse.filter { it.luminaria_id == apiLuminaria._id }
                 val consumoSemanal = procesarConsumoSemanal(consumoLuminaria)
                 val consumoTotal = if (consumoLuminaria.isNotEmpty()) {
