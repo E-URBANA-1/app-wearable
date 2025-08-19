@@ -11,6 +11,11 @@ import com.example.projectointegrador.presentation.screens.MapaScreen
 import com.example.projectointegrador.presentation.screens.HistorialScreen
 import com.example.projectointegrador.presentation.theme.ProjectoIntegradorTheme
 
+
+//{
+//    "correo": "luisivmaraz03@gmail.com",
+//    "password": "19357cbcb4"
+//}
 @Composable
 fun WearApp() {
     ProjectoIntegradorTheme {
