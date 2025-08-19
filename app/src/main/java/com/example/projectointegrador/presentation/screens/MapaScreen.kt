@@ -388,7 +388,6 @@ fun DetalleLuminariaScreen(navController: NavController, luminariaId: String) {
             errorMessage = null
             println("🔍 Buscando luminaria con ID: $luminariaId")
 
-            // Obtener datos de luminarias y consumo
             val (luminariasResponse, consumoResponse) = withContext(Dispatchers.IO) {
                 val luminariasCall = RetrofitClient.api.getLuminarias(token)
                 val consumoCall = RetrofitClient.api.getConsumo(token)
@@ -398,7 +397,7 @@ fun DetalleLuminariaScreen(navController: NavController, luminariaId: String) {
             val found = luminariasResponse.find { it._id == luminariaId }
 
             if (found != null) {
-                // Filtrar consumo para esta luminaria específica
+
                 val consumoLuminaria = consumoResponse.filter { it.luminaria_id == found._id }
                 val consumoSemanal = procesarConsumoSemanal(consumoLuminaria)
                 val consumoTotal = if (consumoLuminaria.isNotEmpty()) {
@@ -572,7 +571,6 @@ fun DetalleLuminariaScreen(navController: NavController, luminariaId: String) {
     }
 }
 
-// 📊 Gráfico de barras actualizado para manejar datos reales
 @Composable
 fun EnergyBarChart(data: List<Double>, labels: List<String>, types: List<String>) {
     val maxValue = data.maxOrNull() ?: 1.0
@@ -581,7 +579,7 @@ fun EnergyBarChart(data: List<Double>, labels: List<String>, types: List<String>
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(110.dp) // ⬆️ Más alto para que no se encimen
+            .height(110.dp)
             .padding(horizontal = 4.dp),
         verticalAlignment = Alignment.Bottom,
         horizontalArrangement = Arrangement.SpaceEvenly
@@ -592,14 +590,14 @@ fun EnergyBarChart(data: List<Double>, labels: List<String>, types: List<String>
                 verticalArrangement = Arrangement.Bottom,
                 modifier = Modifier.padding(horizontal = 2.dp)
             ) {
-                // Valor numérico arriba
+
                 Text(
                     if (hasData) String.format("%.1f", value) else "0",
                     fontSize = 8.sp, // ⬆️ Un poco más grande para mejor lectura
                     color = if (hasData && value > 0) AppColors.Accent else AppColors.OnSurfaceVariant,
                     maxLines = 1
                 )
-                Spacer(modifier = Modifier.height(6.dp)) // ⬆️ Más espacio arriba de la barra
+                Spacer(modifier = Modifier.height(6.dp))
 
                 // Barra del gráfico
                 val barHeight = if (hasData && maxValue > 0) {
