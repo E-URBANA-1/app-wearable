@@ -32,7 +32,6 @@ import java.util.*
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-// 🎨 Colores
 object AppColors {
     val Primary = Color(0xFF1FA1AE)
     val Secondary = Color(0xFF0A67AC)
@@ -49,7 +48,6 @@ object AppColors {
     val Accent = Color(0xFF1FA1AE)
 }
 
-// 🟢 Modelo de tu app actualizado
 data class Luminaria(
     val id: String,
     val lat: Double,
