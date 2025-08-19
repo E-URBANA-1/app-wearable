@@ -29,7 +29,6 @@ fun MainScreen(navController: NavController) {
         // val apiResponse = checkLuminariasFaults()
         // hayFallos.value = apiResponse.hasFaults
 
-        // Simulación temporal (eliminar cuando conectes la API real)
         hayFallos.value = false // Cambiar a true para probar la visualización del botón
     }
 
@@ -78,8 +77,8 @@ fun MainScreen(navController: NavController) {
                     icon = "ℹ",
                     backgroundColor = Color(0xFF16BE80)
                 ) {
-                    // TODO: Navegar a información de la app
-                    // navController.navigate("info")
+                    // ✅ Ahora sí navega a la pantalla de información
+                    navController.navigate("info")
                 }
             }
 
