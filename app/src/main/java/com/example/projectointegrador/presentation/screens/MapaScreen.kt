@@ -81,7 +81,6 @@ data class LuminariaAPI(
     val fecha_instalacion: String
 )
 
-// 🔋 Modelo para datos de consumo
 data class ConsumoAPI(
     val _id: String,
     val luminaria_id: String,
@@ -91,7 +90,6 @@ data class ConsumoAPI(
     val encendida: Boolean
 )
 
-// 🔌 Servicio API
 interface ApiService {
     @GET("api/luminarias")
     suspend fun getLuminarias(
