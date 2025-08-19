@@ -22,7 +22,7 @@ fun AboutAppScreen(navController: NavController) {
             .fillMaxSize()
             .background(
                 Brush.verticalGradient(
-                    listOf(Color(0xFF0A67AC), Color.Black) // Degradado azul → negro
+                    listOf(Color(0xFF0A67AC), Color.Black)
                 )
             )
             .padding(16.dp)
@@ -34,7 +34,6 @@ fun AboutAppScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            // Título
             Text(
                 text = "Información de la App",
                 fontSize = 9.sp,
@@ -42,7 +41,6 @@ fun AboutAppScreen(navController: NavController) {
                 color = Color.White
             )
 
-            // Lista de datos
             InfoItem(label = "Desarrollador", value = "Aldo Tolentino")
             InfoItem(label = "Versión", value = "1.0.0")
             InfoItem(label = "Año", value = "2025")
