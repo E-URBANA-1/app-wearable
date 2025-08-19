@@ -131,7 +131,6 @@ fun procesarConsumoSemanal(consumoData: List<ConsumoAPI>): List<Double> {
             val calendar = Calendar.getInstance()
             calendar.time = fecha
 
-            // Convertir domingo=1 a domingo=6, lunes=2 a lunes=0, etc.
             val diaSemana = when(calendar.get(Calendar.DAY_OF_WEEK)) {
                 Calendar.SUNDAY -> 6
                 Calendar.MONDAY -> 0
@@ -148,8 +147,6 @@ fun procesarConsumoSemanal(consumoData: List<ConsumoAPI>): List<Double> {
             println("❌ Error parseando fecha: ${consumo.timestamp}")
         }
     }
-
-    // Calcular promedio por día (o 0 si no hay datos)
     return diasSemana.map { consumosDia ->
         if (consumosDia.isNotEmpty()) {
             consumosDia.average()
