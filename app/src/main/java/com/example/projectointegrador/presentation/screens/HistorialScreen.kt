@@ -33,7 +33,9 @@ data class HistorialLuminaria(
     val fechaVisita: Date,
     val estadoUltimaVisita: String,
     val consumoUltimaVisita: String,
-    val vecesVisitada: Int
+    val vecesVisitada: Int,
+    val tipoMantenimiento: String,
+    val observaciones: String
 )
 
 @Composable
@@ -75,7 +77,9 @@ fun HistorialScreen(navController: NavController) {
                                     fechaVisita = fecha,
                                     estadoUltimaVisita = obj.optString("estatus", "Desconocido"),
                                     consumoUltimaVisita = obj.optString("consumo", "0 kWh"),
-                                    vecesVisitada = obj.optInt("veces_visitada", 1)
+                                    vecesVisitada = obj.optInt("veces_visitada", 1),
+                                    tipoMantenimiento = obj.optString("tipo_mantenimiento", "No especificado"),
+                                    observaciones = obj.optString("observaciones", "Sin observaciones")
                                 )
                             )
                         }
@@ -131,7 +135,7 @@ fun ListaHistorial(
                     text = "Historial",
                     color = Color.White,
                     textAlign = TextAlign.Center,
-                    fontSize = 12.sp
+                    fontSize = 14.sp
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             }
@@ -142,12 +146,12 @@ fun ListaHistorial(
                     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(16.dp)) {
                         Text("📝", fontSize = 24.sp)
                         Spacer(modifier = Modifier.height(4.dp))
-                        Text("Sin historial", color = Color(0xFFEAEFF5), fontSize = 10.sp)
+                        Text("Sin historial", color = Color(0xFFEAEFF5), fontSize = 12.sp)
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
                             "Visita algunas luminarias para ver el historial aquí",
                             color = Color(0xFFEAEFF5),
-                            fontSize = 8.sp,
+                            fontSize = 10.sp,
                             textAlign = TextAlign.Center
                         )
                     }
@@ -162,7 +166,7 @@ fun ListaHistorial(
                     modifier = Modifier.fillMaxWidth().height(40.dp),
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF0A67AC))
                 ) {
-                    Text("Volver", fontSize = 10.sp, color = Color.White)
+                    Text("Volver", fontSize = 12.sp, color = Color.White)
                 }
             }
         }
@@ -179,22 +183,58 @@ fun HistorialItem(luminaria: HistorialLuminaria, onClick: () -> Unit) {
         else -> Color(0xFFEAEFF5)
     }
 
+    // Acortar el ID para mejor visualización
+    val shortId = if (luminaria.id.length > 8) {
+        luminaria.id.take(8) + "..."
+    } else {
+        luminaria.id
+    }
+
     Button(
         modifier = Modifier
             .fillMaxWidth()
-            .height(75.dp)
-            .padding(horizontal = 1.dp, vertical = 2.dp),
+            .height(90.dp)
+            .padding(horizontal = 2.dp, vertical = 3.dp),
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF324B61))
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-            Text("Luminaria #${luminaria.id}", fontSize = 11.sp, color = Color.White)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(vertical = 2.dp)
+        ) {
+            Text(
+                text = "Luminaria",
+                fontSize = 12.sp,
+                color = Color.White
+            )
+            Text(
+                text = "#$shortId",
+                fontSize = 10.sp,
+                color = Color(0xFF1FA1AE),
+                maxLines = 1
+            )
             Spacer(modifier = Modifier.height(2.dp))
-            Text(dateFormat.format(luminaria.fechaVisita), fontSize = 9.sp, color = Color(0xFFEAEFF5))
+            Text(
+                text = dateFormat.format(luminaria.fechaVisita),
+                fontSize = 10.sp,
+                color = Color(0xFFEAEFF5),
+                maxLines = 1
+            )
             Spacer(modifier = Modifier.height(2.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(luminaria.estadoUltimaVisita, fontSize = 8.sp, color = estadoColor)
-                Text("${luminaria.vecesVisitada}x", fontSize = 8.sp, color = Color(0xFF1FA1AE))
+                Text(
+                    text = luminaria.estadoUltimaVisita,
+                    fontSize = 9.sp,
+                    color = estadoColor,
+                    maxLines = 1
+                )
+                Text(
+                    text = "${luminaria.vecesVisitada}x",
+                    fontSize = 9.sp,
+                    color = Color(0xFF1FA1AE),
+                    maxLines = 1
+                )
             }
         }
     }
@@ -210,50 +250,113 @@ fun DetalleHistorial(luminaria: HistorialLuminaria, onBackClick: () -> Unit) {
         else -> Color(0xFFEAEFF5)
     }
 
+    val shortId = if (luminaria.id.length > 12) {
+        luminaria.id.take(8) + "..." + luminaria.id.takeLast(4)
+    } else {
+        luminaria.id
+    }
+
     Scaffold(timeText = { TimeText() }) {
         ScalingLazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Brush.verticalGradient(listOf(Color(0xFF324B61), Color(0xFF1A1A1A))))
-                .padding(horizontal = 4.dp),
+                .padding(horizontal = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            item { Text("Historial Detallado", fontSize = 11.sp, color = Color.White); Spacer(Modifier.height(8.dp)) }
-            item { Text(luminaria.nombre, fontSize = 12.sp, color = Color(0xFF1FA1AE)); Spacer(Modifier.height(2.dp)) }
-            item { Text(luminaria.ubicacion, fontSize = 10.sp, color = Color(0xFFEAEFF5)); Spacer(Modifier.height(8.dp)) }
+            item {
+                Text("Historial Detallado", fontSize = 13.sp, color = Color.White, textAlign = TextAlign.Center)
+                Spacer(Modifier.height(8.dp))
+            }
 
             item {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("Última visita:", fontSize = 9.sp, color = Color(0xFFEAEFF5))
+                    Text("Luminaria", fontSize = 12.sp, color = Color.White, textAlign = TextAlign.Center)
+                    Text(shortId, fontSize = 10.sp, color = Color(0xFF1FA1AE), textAlign = TextAlign.Center)
+                }
+                Spacer(Modifier.height(8.dp))
+            }
+
+            item {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("Ubicación:", fontSize = 10.sp, color = Color(0xFFEAEFF5), textAlign = TextAlign.Center)
                     Spacer(Modifier.height(2.dp))
-                    Text(dateFormat.format(luminaria.fechaVisita), fontSize = 10.sp, color = Color.White)
+                    Text(
+                        text = if (luminaria.ubicacion.isBlank() || luminaria.ubicacion == "Sin ubicación")
+                            "No especificada"
+                        else luminaria.ubicacion,
+                        fontSize = 11.sp,
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
+                        maxLines = 2
+                    )
+                }
+                Spacer(Modifier.height(8.dp))
+            }
+
+            item {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("Última visita:", fontSize = 10.sp, color = Color(0xFFEAEFF5), textAlign = TextAlign.Center)
+                    Spacer(Modifier.height(2.dp))
+                    Text(dateFormat.format(luminaria.fechaVisita), fontSize = 11.sp, color = Color.White, textAlign = TextAlign.Center)
                 }
                 Spacer(Modifier.height(6.dp))
             }
 
             item {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("Estado:", fontSize = 9.sp, color = Color(0xFFEAEFF5))
+                    Text("Estado:", fontSize = 10.sp, color = Color(0xFFEAEFF5), textAlign = TextAlign.Center)
                     Spacer(Modifier.height(2.dp))
-                    Text(luminaria.estadoUltimaVisita, fontSize = 10.sp, color = estadoColor)
+                    Text(luminaria.estadoUltimaVisita, fontSize = 11.sp, color = estadoColor, textAlign = TextAlign.Center)
                 }
                 Spacer(Modifier.height(6.dp))
             }
 
             item {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("Consumo:", fontSize = 9.sp, color = Color(0xFFEAEFF5))
+                    Text("Consumo:", fontSize = 10.sp, color = Color(0xFFEAEFF5), textAlign = TextAlign.Center)
                     Spacer(Modifier.height(2.dp))
-                    Text(luminaria.consumoUltimaVisita, fontSize = 10.sp, color = Color(0xFF16BE80))
+                    Text(luminaria.consumoUltimaVisita, fontSize = 11.sp, color = Color(0xFF16BE80), textAlign = TextAlign.Center)
                 }
                 Spacer(Modifier.height(6.dp))
             }
 
             item {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("Veces visitada:", fontSize = 9.sp, color = Color(0xFFEAEFF5))
+                    Text("Tipo de mantenimiento:", fontSize = 10.sp, color = Color(0xFFEAEFF5), textAlign = TextAlign.Center)
                     Spacer(Modifier.height(2.dp))
-                    Text("${luminaria.vecesVisitada} veces", fontSize = 10.sp, color = Color.White)
+                    Text(
+                        text = luminaria.tipoMantenimiento.replaceFirstChar {
+                            if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+                        },
+                        fontSize = 11.sp,
+                        color = Color(0xFFFF9800),
+                        textAlign = TextAlign.Center
+                    )
+                }
+                Spacer(Modifier.height(6.dp))
+            }
+
+            item {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("Observaciones:", fontSize = 10.sp, color = Color(0xFFEAEFF5), textAlign = TextAlign.Center)
+                    Spacer(Modifier.height(2.dp))
+                    Text(
+                        text = luminaria.observaciones,
+                        fontSize = 10.sp,
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
+                        maxLines = 3
+                    )
+                }
+                Spacer(Modifier.height(6.dp))
+            }
+
+            item {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("Veces visitada:", fontSize = 10.sp, color = Color(0xFFEAEFF5), textAlign = TextAlign.Center)
+                    Spacer(Modifier.height(2.dp))
+                    Text("${luminaria.vecesVisitada} veces", fontSize = 11.sp, color = Color.White, textAlign = TextAlign.Center)
                 }
                 Spacer(Modifier.height(10.dp))
             }
@@ -264,7 +367,7 @@ fun DetalleHistorial(luminaria: HistorialLuminaria, onBackClick: () -> Unit) {
                     modifier = Modifier.fillMaxWidth().height(40.dp),
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF0A67AC))
                 ) {
-                    Text("Volver", fontSize = 10.sp, color = Color.White)
+                    Text("Volver", fontSize = 12.sp, color = Color.White)
                 }
             }
         }
