@@ -20,16 +20,14 @@ import androidx.wear.compose.material.*
 
 @Composable
 fun MainScreen(navController: NavController) {
-    // Estado para simular fallos de API - reemplazar con llamada real a API
     val hayFallos = remember { mutableStateOf(false) }
 
-    // Simulación de llamada a API para detectar fallos
     LaunchedEffect(Unit) {
         // TODO: Reemplazar con llamada real a tu API
         // val apiResponse = checkLuminariasFaults()
         // hayFallos.value = apiResponse.hasFaults
 
-        hayFallos.value = false // Cambiar a true para probar la visualización del botón
+        hayFallos.value = false
     }
 
     Scaffold(
@@ -77,12 +75,10 @@ fun MainScreen(navController: NavController) {
                     icon = "ℹ",
                     backgroundColor = Color(0xFF16BE80)
                 ) {
-                    // ✅ Ahora sí navega a la pantalla de información
                     navController.navigate("info")
                 }
             }
 
-            // Solo mostrar botón de fallo si hay fallos reales
             if (hayFallos.value) {
                 item {
                     CustomButtonWithIcon(
