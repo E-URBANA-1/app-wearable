@@ -29,7 +29,6 @@ import java.net.URL
 data class HistorialLuminaria(
     val id: String,
     val nombre: String,
-    val ubicacion: String,
     val fechaVisita: Date,
     val estadoUltimaVisita: String,
     val consumoUltimaVisita: String,
@@ -73,7 +72,6 @@ fun HistorialScreen(navController: NavController) {
                                 HistorialLuminaria(
                                     id = obj.optString("luminaria_id"),
                                     nombre = "Luminaria ${obj.optString("luminaria_id")}",
-                                    ubicacion = obj.optString("ubicacion", "Sin ubicación"),
                                     fechaVisita = fecha,
                                     estadoUltimaVisita = obj.optString("estatus", "Desconocido"),
                                     consumoUltimaVisita = obj.optString("consumo", "0 kWh"),
@@ -183,7 +181,6 @@ fun HistorialItem(luminaria: HistorialLuminaria, onClick: () -> Unit) {
         else -> Color(0xFFEAEFF5)
     }
 
-    // Acortar el ID para mejor visualización
     val shortId = if (luminaria.id.length > 8) {
         luminaria.id.take(8) + "..."
     } else {
@@ -279,23 +276,6 @@ fun DetalleHistorial(luminaria: HistorialLuminaria, onBackClick: () -> Unit) {
 
             item {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("Ubicación:", fontSize = 10.sp, color = Color(0xFFEAEFF5), textAlign = TextAlign.Center)
-                    Spacer(Modifier.height(2.dp))
-                    Text(
-                        text = if (luminaria.ubicacion.isBlank() || luminaria.ubicacion == "Sin ubicación")
-                            "No especificada"
-                        else luminaria.ubicacion,
-                        fontSize = 11.sp,
-                        color = Color.White,
-                        textAlign = TextAlign.Center,
-                        maxLines = 2
-                    )
-                }
-                Spacer(Modifier.height(8.dp))
-            }
-
-            item {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text("Última visita:", fontSize = 10.sp, color = Color(0xFFEAEFF5), textAlign = TextAlign.Center)
                     Spacer(Modifier.height(2.dp))
                     Text(dateFormat.format(luminaria.fechaVisita), fontSize = 11.sp, color = Color.White, textAlign = TextAlign.Center)
@@ -305,7 +285,7 @@ fun DetalleHistorial(luminaria: HistorialLuminaria, onBackClick: () -> Unit) {
 
             item {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("Estado:", fontSize = 10.sp, color = Color(0xFFEAEFF5), textAlign = TextAlign.Center)
+                    Text("Estado:", fontSize = 10.sp, color = Color(0xFFFF5722), textAlign = TextAlign.Center)
                     Spacer(Modifier.height(2.dp))
                     Text(luminaria.estadoUltimaVisita, fontSize = 11.sp, color = estadoColor, textAlign = TextAlign.Center)
                 }
@@ -314,7 +294,7 @@ fun DetalleHistorial(luminaria: HistorialLuminaria, onBackClick: () -> Unit) {
 
             item {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("Consumo:", fontSize = 10.sp, color = Color(0xFFEAEFF5), textAlign = TextAlign.Center)
+                    Text("Consumo:", fontSize = 10.sp, color = Color(0xFFFF5722), textAlign = TextAlign.Center)
                     Spacer(Modifier.height(2.dp))
                     Text(luminaria.consumoUltimaVisita, fontSize = 11.sp, color = Color(0xFF16BE80), textAlign = TextAlign.Center)
                 }
